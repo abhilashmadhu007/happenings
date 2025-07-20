@@ -1,0 +1,232 @@
+{% extends "clubhome.html" %}
+
+{% block content %}
+<br><br>
+<section id="club-add-event" class="club-add-event section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Add Event</h2>
+    </div>
+    
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4 mt-1">
+            <div class="col-lg-12">
+                <form action="" method="post" enctype="multipart/form-data" class="form" data-aos="fade-up" data-aos-delay="400">
+                    {% csrf_token %}
+                    <div class="row gy-4">
+
+                        <!-- Event Form Fields -->
+                        <div class="col-md-6">
+                            <label for="name">Event Name</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Event Name" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="event_datetime">Event Date & Time</label>
+                            <input type="datetime-local" id="event_datetime" name="event_datetime" class="form-control" required>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" rows="4" class="form-control" placeholder="Event Description"></textarea>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="address">Place</label>
+                            <input type="text" id="address" name="address" class="form-control" placeholder="Event Address" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="main_image">Main Event Image</label>
+                            <input type="file" id="main_image" name="main_image" class="form-control" required>
+                        </div>
+
+                      
+                        {% comment %} add field for event category and artist {% endcomment %}
+                         <div>
+                            <label for="category">Event Category</label>
+                            <select name="category" id="category" class="form-control" required>
+                                <option value="" selected disabled hidden>Select Event Category</option>
+                                <option value="music">Music</option>
+                                <option value="comedy">Comedy</option>
+                                <option value="dance">Dance</option>
+                                <option value="theatre">Theatre</option>
+                                <option value="sports">Sports</option>
+                                <option value="conference">Conference</option>
+                                <option value="exhibition">Exhibition</option>
+                                <option value="festival">Festival</option>
+                                <option value="party">Party</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="artist">Artist</label>
+                            <input type="text" id="artist" name="artist" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="capacity">Normal Tickets Capacity</label>
+                            <input type="number" id="capacity" name="capacity" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="price">Normal Ticket Price</label>
+                            <input type="number" id="price" name="price" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="capacity">VIP Tickets Capacity (Optional)</label>
+                            <input type="number" id="capacity" name="vip_capacity" class="form-control" >
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="vip_price">VIP Ticket Price (Optional)</label>
+                            <input type="number" id="vip_price" name="vip_price" class="form-control">
+                        </div>
+
+                      <div class="col-md-12">
+    <h5 class="text-center">Select Location from Map</h5>
+    <input id="pac-input" class="form-control mb-2" type="text" placeholder="Search Location">
+    <div id="map" class="rounded-3"></div>
+    <input onclick="deleteMarkers();" type="button" value="Refresh Location" class="btn btn-warning mt-2 w-100 rounded-3">
+    <input type="hidden" id="l1" name="latitude" value="">
+    <input type="hidden" id="l2" name="longitude" value="">
+</div>
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+        border: 2px solid #ccc;
+        min-height: 400px;
+    }
+</style>
+
+                      
+
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn btn-primary">Add Event</button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Section for Displaying Added Events -->
+    <div class="container mt-5">
+        <h3>Added Events</h3>
+        <div class="row">
+            {% for event in events %}
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src="../static{{ event.main_image.url }}" class="card-img-top" alt="{{ event.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ event.name }}</h5>
+                            <p class="card-text">
+                                <strong>Date:</strong> {{ event.event_at|date:"Y-m-d" }} <br>
+                                <strong>Time:</strong> {{ event.event_at|date:"H:i" }} <br>
+                                <strong>Address:</strong> {{ event.address }} <br>
+                                <strong>Category:</strong> {{ event.event_category }} <br>
+                                <strong>Artist:</strong> {{ event.artist }} <br>
+                                <strong>Ticket Price:</strong> {{ event.price }} <br>
+                                {% if event.vip_price %}
+                                    <strong>VIP Capacity:</strong> {{ event.vip_capacity }} <br>
+                                    <strong>VIP Price:</strong> {{ event.vip_price }} <br>
+                                {% else %}
+                                    <strong>VIP Capacity:</strong> N/A <br>
+                                    <strong>VIP Price:</strong> N/A <br>
+                                {% endif %}
+                                <strong>Normal Capacity:</strong> {{ event.capacity }} tickets
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No events added yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    let map, markers = [];
+
+    function initAutocomplete() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 10.1076, lng: 76.3457 },
+            zoom: 13,
+            mapTypeId: 'roadmap'
+        });
+
+        map.addListener("click", function (event) {
+            var clickLat = event.latLng.lat();
+            var clickLon = event.latLng.lng();
+
+            document.getElementById('l1').value = clickLat.toFixed(5);
+            document.getElementById('l2').value = clickLon.toFixed(5);
+
+            clearMarkers();
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(clickLat, clickLon),
+                map: map,
+                draggable: true
+            });
+            markers.push(marker);
+        });
+
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+        map.addListener('bounds_changed', function () {
+            searchBox.setBounds(map.getBounds());
+        });
+
+        searchBox.addListener('places_changed', function () {
+            var places = searchBox.getPlaces();
+            if (places.length == 0) return;
+
+            clearMarkers();
+
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach(function (place) {
+                if (!place.geometry) return;
+
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location
+                }));
+
+                if (place.geometry.viewport) bounds.union(place.geometry.viewport);
+                else bounds.extend(place.geometry.location);
+            });
+            map.fitBounds(bounds);
+        });
+    }
+
+    function clearMarkers() {
+        markers.forEach(marker => marker.setMap(null));
+        markers = [];
+    }
+
+    function deleteMarkers() {
+        clearMarkers();
+        document.getElementById('l1').value = '';
+        document.getElementById('l2').value = '';
+    }
+
+    // Ensure map initializes after DOM is fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        initAutocomplete();
+    });
+</script>
+
+<!-- Load Maps API (without callback) -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRhhnbNUXPX9_JYKnroSAex2-1KFaSmwQ&libraries=places"></script>
+
+
+
+	{% comment %} <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRhhnbNUXPX9_JYKnroSAex2-1KFaSmwQ&libraries=places&callback=initAutocomplete"></script> {% endcomment %}
+
+
+
+{% endblock %}

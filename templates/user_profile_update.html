@@ -1,0 +1,64 @@
+{% extends "userhome.html" %}
+{% block content %}
+<br><br>
+<section id="contact" class="contact section">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+      <h2>Update Profile</h2>
+    </div><!-- End Section Title -->
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gy-4">
+
+        
+
+        
+        
+
+      </div>
+
+      <div class="row gy-4 mt-1">
+        
+
+        <div class="col-lg-12">
+          <form action="" method="post" class="" data-aos="fade-up" data-aos-delay="400">
+            {% csrf_token %}
+            <div class="row gy-4">
+
+              <div class="col-md-6">
+                <input type="text" name="name" pattern="[A-Za-z]{,}" value="{{data.name}}" class="form-control" placeholder="Your Name" required="">
+              </div>
+
+              <div class="col-md-6 ">
+                <input type="email" class="form-control" name="email" value="{{data.email}}" placeholder="Your Email" required="">
+              </div>
+
+              <div class="col-md-12">
+                <input pattern="[6789][0-9]{9}" maxlength="10" type="tel" value="{{data.phone}}" class="form-control" name="phone" placeholder="Your Phone" required="">
+              </div>
+              <div class="col-md-12">
+                <textarea class="form-control" name="address" rows="6"  placeholder="Address" required="">{{data.address}}</textarea>
+              </div>
+
+              <div class="col-md-12 ">
+                <input type="password" class="form-control" name="password" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" placeholder="Your Password" >
+              </div>
+
+              <div class="col-md-12 text-center">
+
+                <button type="submit" class="btn btn-primary">Update</button>
+              </div>
+
+            </div>
+          </form>
+        </div><!-- End Contact Form -->
+
+      </div>
+
+    </div>
+
+  </section><!-- /Contact Section -->
+
+{% endblock content %}

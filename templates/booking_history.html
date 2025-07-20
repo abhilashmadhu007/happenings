@@ -1,0 +1,75 @@
+{% extends "userhome.html" %}
+
+{% block content %}
+{% load math_filters %}
+<br><br><br><br>
+<section id="booking-history" class="booking-history section light-background">
+
+    <!-- Section Title -->
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Booking History</h2>
+        <p>Review your past and upcoming event bookings</p>
+    </div><!-- End Section Title -->
+
+    <div class="container">
+        {% if bookings %}
+        {% for booking in bookings %}
+<div class="row gy-4 booking-item" 
+     data-aos="fade-up" 
+     data-aos-delay="{{ forloop.counter0|add:1 }}00" 
+     style="border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; transition: all 0.3s ease;">
+
+    <!-- Event Name -->
+    <div class="col-lg-3 d-flex align-items-center justify-content-center">
+        <h3>{{ booking.event.name }}</h3>
+    </div>
+
+    <!-- Event Date & Time -->
+    <div class="col-lg-3 d-flex align-items-center justify-content-center">
+        <h4>{{ booking.event.event_at|date:"M d, Y h:i A" }}</h4>
+    </div>
+
+    <!-- Booking Details -->
+    <div class="col-lg-3 d-flex align-items-center justify-content-center">
+        <ul>
+            <li><i class="bi bi-ticket"></i> <strong>Normal Tickets:</strong> {{ booking.nquantity|default:0 }}</li>
+            <li><i class="bi bi-star"></i> <strong>VIP Tickets:</strong> {{ booking.vquantity|default:0 }}</li>
+            <li><i class="bi bi-check-circle"></i> <strong>Status:</strong> {{ booking.status }}</li>
+        </ul>
+    </div>
+
+    <!-- Cancel Button -->
+    <div class="col-lg-3 d-flex flex-column align-items-center justify-content-center">
+        {% if booking.status != "Cancelled" and booking.event.event_at > now %}
+            <form method="POST" action="{% url 'cancel_booking' booking.id %}" onsubmit="return confirmCancellation()">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger mt-2">Cancel Booking</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+<script>
+    // JavaScript to confirm cancellation and show refund message
+    function confirmCancellation() {
+        if (confirm("Are you sure you want to cancel this booking?")) {
+            alert("The refund will be processed within 3 working days.");
+            return true; // Proceed with form submission
+        }
+        return false; // Cancel form submission
+    }
+</script>
+
+        
+        {% else %}
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>No bookings found.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+</section><!-- /Booking History Section -->
+{% endblock content %}

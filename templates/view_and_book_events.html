@@ -1,0 +1,136 @@
+{% extends "userhome.html" %}
+{% block content %}
+<br><br>
+
+<!-- Search and Filter Form -->
+<section id="search-filters" class="section">
+    <div class="container">
+        <form method="GET" action="{% url 'view_and_book_events' %}">
+            <div class="row">
+                <!-- Search by Event Name, Place, Category, or Artist -->
+                <div class="col-md-4 mb-3">
+                    <input type="text" name="search" class="form-control" placeholder="Search by event name, place, category, or artist" value="{{ request.GET.search }}">
+                </div>
+
+                <!-- Filter by Date Range -->
+                <div class="col-md-3 mb-3">
+                    <input type="date" name="start_date" class="form-control" placeholder="Start Date" value="{{ request.GET.start_date }}">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <input type="date" name="end_date" class="form-control" placeholder="End Date" value="{{ request.GET.end_date }}">
+                </div>
+
+                <!-- Filter by Ticket Price Range -->
+                <div class="col-md-2 mb-3">
+                    <input type="number" name="min_price" class="form-control" placeholder="Min Price" value="{{ request.GET.min_price }}">
+                </div>
+                <div class="col-md-2 mb-3">
+                    <input type="number" name="max_price" class="form-control" placeholder="Max Price" value="{{ request.GET.max_price }}">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    <button type="reset" class="btn btn-secondary" onclick="window.location.href='{% url 'view_and_book_events' %}'">Reset</button>
+                </div>
+            </div>
+        </form>
+        
+        <!-- Nearest Events Button - NEW ADDITION -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <button id="findNearestEvents" class="btn btn-success">
+                    <i class="fas fa-map-marker-alt"></i> Find Events Near Me
+                </button>
+                {% if user_distance %}
+                <span class="ml-3">Showing events sorted by distance from your location</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Events List -->
+<section id="events" class="events section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Upcoming Events</h2>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4 mt-1">
+            {% for event in events %}
+                <div class="col-lg-3 col-md-6" style="line-height: 1;">
+                    <div class="card" style="width: 19rem;">
+                        <img src="../static{{ event.main_image.url }}" class="card-img-top" alt="Event Image">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ event.name }}</h2>
+                            <p class="card-text">{{ event.description }}</p>
+                            <p><strong>Club:</strong> {{ event.club.name }}</p>
+                            <p><strong>Date & Time:</strong> {{ event.event_at }}</p>
+                            <p><strong>Address:</strong> {{ event.address }}</p>
+                            <p><strong>Category:</strong> {{ event.event_category }}</p>
+                            <p><strong>Artist:</strong> {{ event.artist }}</p>
+                            <p><strong>Capacity:</strong> {{ event.capacity|default:"N/A" }}</p>
+                            <p><strong>Price:</strong> {{ event.price|default:"N/A" }}</p>
+                            <p><strong>VIP Capacity:</strong> {{ event.vip_capacity|default:"N/A" }}</p>
+                            <p><strong>VIP Price:</strong> {{ event.vip_price|default:"N/A" }}</p>
+                            
+                            <!-- Display distance when available - NEW ADDITION -->
+                            {% if event.distance %}
+                            <p><strong>Distance:</strong> {{ event.distance|floatformat:1 }} miles</p>
+                            {% endif %}
+
+                            <form action="{% url 'payment' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="event_id" value="{{ event.id }}">
+
+                                <!-- Normal Ticket Quantity -->
+                                <div class="form-group">
+                                    <label for="nquantity">Normal Ticket Quantity</label>
+                                    <input type="number" name="nquantity" id="nquantity" class="form-control" min="0">
+                                </div>
+
+                                <!-- VIP Ticket Quantity -->
+                                {% if event.vip_price and event.vip_capacity %}
+                                <div class="form-group">
+                                    <label for="vquantity">VIP Ticket Quantity</label>
+                                    <input type="number" name="vquantity" id="vquantity" class="form-control" min="0">
+                                </div>
+                                {% endif %}
+
+                                <br>
+                                <button type="submit" class="btn btn-primary">Book Now</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No events found matching your criteria.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Add JavaScript for geolocation - NEW ADDITION -->
+<script>
+    document.getElementById('findNearestEvents').addEventListener('click', function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+                // Add the coordinates to the URL with correct parameter names
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('user_lat', lat);
+                currentUrl.searchParams.set('user_lon', lon);
+                currentUrl.searchParams.set('nearest', '1'); // Ensure nearest filter is applied
+                window.location.href = currentUrl.toString();
+            }, function(error) {
+                alert('Unable to get your location. Please enable location services in your browser.');
+            });
+        } else {
+            alert('Geolocation is not supported by your browser.');
+        }
+    });
+    </script>
+    
+{% endblock content %}

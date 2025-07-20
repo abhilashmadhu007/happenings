@@ -1,0 +1,626 @@
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Odibee+Sans&display=swap');
+
+
+    * {
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        color: white;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        margin: 0;
+        background: white;
+        overflow-x: hidden;
+        background-image: linear-gradient(45deg, #36d1dc, #5b86e5, #a73737, #a044ff);
+        animation: Gradient 20s ease infinite;
+        background-repeat: no-repeat;
+        background-size: cover;
+        /* Or 'contain' to fit it within the div */
+    }
+
+    @keyframes Gradient {
+        0% {
+            background-image: linear-gradient(#36d1dc, #5b86e5, #a73737, #a044ff);
+        }
+
+        25% {
+            background-image: linear-gradient(#5b86e5, #36d1dc, #a73737, #a044ff);
+        }
+
+        50% {
+            background-image: linear-gradient(#36d1dc, #5b86e5, #a044ff, #a044ff);
+        }
+
+        75% {
+            background-image: linear-gradient(#5b86e5, #36d1dc, #a73737, #36d1dc);
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    #root {
+        margin-top: 5rem;
+        display: flex;
+        justify-content: space-between;
+        width: 57.22rem;
+    }
+
+    @media (max-width: 58.22rem) {
+        #root {
+            width: 100%;
+            flex-direction: column;
+        }
+    }
+
+    @media (max-width: 30.22rem) {
+        #root {
+            margin-top: 0.5rem;
+        }
+    }
+
+    #card {
+        position: relative;
+        width: 23rem;
+        height: 15.5rem;
+        margin-bottom: 3rem;
+    }
+
+    @media (max-width: 30.22rem) {
+        #card {
+            width: 20.22rem;
+            height: 12.75rem;
+            margin-bottom: 1.75rem;
+        }
+    }
+
+    #card>#card-top,
+    #card>#card-bottom {
+        width: 20.22rem;
+        height: 12.75rem;
+        border-radius: 0.6rem;
+        overflow: hidden;
+    }
+
+    #card>#card-top {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        /* box-shadow: 1rem 1rem 2.75rem #4e96c7; */
+        color: white;
+        font-family: 'Odibee Sans',
+            'Montserrat',
+            sans-serif;
+
+        background: linear-gradient(300deg, darkviolet, #1076ad, #083bdf, #df3008);
+        background-size: 240% 240%;
+        animation: gradient-animation 24s ease infinite;
+    }
+
+    @keyframes gradient-animation {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+
+    }
+
+    #card>#card-top::before {
+        position: absolute;
+        content: "";
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('http://cdn.flaticon.com/svg/44/44386.svg') no-repeat center;
+        background-size: cover;
+        opacity: 0.04;
+    }
+
+    #card>#card-top>.logo {
+        position: absolute;
+        top: 0.25rem;
+        right: 2rem;
+    }
+
+    #card>#card-top>.logo>svg {
+        width: 4rem;
+    }
+
+    #card>#card-top>.card-number {
+        position: absolute;
+        top: 45%;
+        left: 2rem;
+        width: 70%;
+        opacity: 0.75;
+        font-size: 1.25rem;
+    }
+
+    #card>#card-top>.row-container {
+        position: absolute;
+        bottom: 1rem;
+        left: 2rem;
+        width: 70%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        opacity: 0.75;
+    }
+
+    #card>#card-top>.row-container>div {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    #card>#card-top>.row-container>div>span {
+        height: 1rem;
+        margin-bottom: 0.5rem;
+        padding: 0;
+    }
+
+    @media (max-width: 30.22rem) {
+        #card>#card-bottom {
+            display: none;
+        }
+    }
+
+    #card>#card-bottom {
+        position: absolute;
+        content: "";
+        top: 2.75rem;
+        left: 2.75rem;
+
+        /* box-shadow: 0.5rem 0.5rem 2.75rem #e6583f; */
+
+        background: linear-gradient(300deg, darkviolet, #1076ad, #083bdf, #df3008);
+        background-size: 240% 240%;
+        animation: gradient-animation 24s ease infinite;
+    }
+
+    @keyframes gradient-animation {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    #card>#card-bottom::after {
+        position: absolute;
+        content: "";
+        top: 2.55rem;
+        width: 100%;
+        height: 2.55rem;
+        background: #E2E0E1;
+    }
+
+    #form {
+        width: 27rem;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    @media (max-width: 30.22rem) {
+        #form {
+            width: 20.22rem;
+        }
+    }
+
+    #form fieldset {
+        border: none;
+        margin-top: 1rem;
+        margin-left: 0;
+        padding-left: 0;
+        padding-right: 0;
+        width: 100%;
+    }
+
+    #form fieldset input,
+    #form fieldset select {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        outline: none;
+    }
+
+    #form fieldset.card-number input,
+    #form fieldset.card-holder input {
+        border: solid 1px #A9A9A9;
+        background: transparent;
+    }
+
+    #form .row-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    #form .row-container fieldset {
+        flex: 1;
+        margin-right: 1.25rem;
+    }
+
+    #form .row-container fieldset:nth-child(3) {
+        margin-right: 0;
+    }
+
+    #form .payment-details {
+        margin-top: 1rem;
+        width: 100%;
+    }
+
+    #form .payment-details>div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #form .button {
+        color: white;
+        cursor: pointer;
+        outline: none;
+        background: #fb5129;
+        border: solid 1px #DC4039;
+        border-radius: 0.2rem;
+        width: 100%;
+        height: 3rem;
+        letter-spacing: 1.2;
+        margin-top: 1rem;
+    }
+
+    input[type='number'] {
+        background: transparent;
+    }
+
+    option {
+        background: black;
+        color: white;
+    }
+
+    ::placeholder {
+        color: white;
+    }
+
+    select {
+        background: transparent;
+    }
+
+    @keyframes move_wave {
+        0% {
+            transform: translateX(0) translateZ(0) scaleY(1)
+        }
+
+        50% {
+            transform: translateX(-25%) translateZ(0) scaleY(0.55)
+        }
+
+        100% {
+            transform: translateX(-50%) translateZ(0) scaleY(1)
+        }
+    }
+
+    .waveWrapper {
+        overflow: hidden;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        margin: auto;
+    }
+
+    .waveWrapperInner {
+        position: absolute;
+        width: 100%;
+        overflow: hidden;
+        height: 100%;
+        bottom: -1px;
+        background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
+    }
+
+    .bgTop {
+        z-index: 15;
+        opacity: 0.5;
+    }
+
+    .bgMiddle {
+        z-index: 10;
+        opacity: 0.75;
+    }
+
+    .bgBottom {
+        z-index: 5;
+    }
+
+    .wave {
+        position: absolute;
+        left: 0;
+        width: 200%;
+        height: 100%;
+        background-repeat: repeat no-repeat;
+        background-position: 0 bottom;
+        transform-origin: center bottom;
+    }
+
+    .waveTop {
+        background-size: 90% 100px;
+    }
+
+    .waveAnimation .waveTop {
+        animation: move-wave 3s;
+        -webkit-animation: move-wave 3s;
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s;
+    }
+
+    .waveMiddle {
+        background-size: 50% 120px;
+    }
+
+    .waveAnimation .waveMiddle {
+        animation: move_wave 10s linear infinite;
+    }
+
+    .waveBottom {
+        background-size: 50% 100px;
+    }
+
+    .waveAnimation .waveBottom {
+        animation: move_wave 15s linear infinite;
+    }
+
+    #root {
+        z-index: 100;
+    }
+</style>
+
+<div class="waveWrapper waveAnimation">
+    <div class="waveWrapperInner bgTop">
+        <div class="wave waveTop" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')">
+        </div>
+    </div>
+    <div class="waveWrapperInner bgMiddle">
+        <div class="wave waveMiddle" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')">
+        </div>
+    </div>
+    <div class="waveWrapperInner bgBottom">
+        <div class="wave waveBottom" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-bot.png')">
+        </div>
+    </div>
+</div>
+
+<div id="root">
+    <div id="card">
+        <div id="card-bottom"></div>
+        <div id="card-top">
+            <div class="logo">
+                <svg version="1.1" id="visa" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="72px" height="72px"
+                    viewBox="0 0 47.834 47.834" style="enable-background:new 0 0 47.834 47.834;" fill="white">
+                    <g>
+                        <g>
+                            <path d="M44.688,16.814h-3.004c-0.933,0-1.627,0.254-2.037,1.184l-5.773,13.074h4.083c0,0,0.666-1.758,0.817-2.143
+                       c0.447,0,4.414,0.006,4.979,0.006c0.116,0.498,0.474,2.137,0.474,2.137h3.607L44.688,16.814z M39.893,26.01
+                       c0.32-0.819,1.549-3.987,1.549-3.987c-0.021,0.039,0.317-0.825,0.518-1.362l0.262,1.23c0,0,0.745,3.406,0.901,4.119H39.893z
+                       M34.146,26.404c-0.028,2.963-2.684,4.875-6.771,4.875c-1.743-0.018-3.422-0.361-4.332-0.76l0.547-3.193l0.501,0.228
+                       c1.277,0.532,2.104,0.747,3.661,0.747c1.117,0,2.313-0.438,2.325-1.393c0.007-0.625-0.501-1.07-2.016-1.77
+                       c-1.476-0.683-3.43-1.827-3.405-3.876c0.021-2.773,2.729-4.708,6.571-4.708c1.506,0,2.713,0.31,3.483,0.599l-0.526,3.092
+                       l-0.351-0.165c-0.716-0.288-1.638-0.566-2.91-0.546c-1.522,0-2.228,0.634-2.228,1.227c-0.008,0.668,0.824,1.108,2.184,1.77
+                       C33.126,23.546,34.163,24.783,34.146,26.404z M0,16.962l0.05-0.286h6.028c0.813,0.031,1.468,0.29,1.694,1.159l1.311,6.304
+                       C7.795,20.842,4.691,18.099,0,16.962z M17.581,16.812l-6.123,14.239l-4.114,0.007L3.862,19.161
+                       c2.503,1.602,4.635,4.144,5.386,5.914l0.406,1.469l3.808-9.729L17.581,16.812L17.581,16.812z M19.153,16.8h3.89L20.61,31.066
+                       h-3.888L19.153,16.8z" />
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <div class="card-number">
+                XXXX XXXX XXXX XXXX
+            </div>
+            <div class="row-container">
+                <div class="card-holder">
+                    <span>Card Holder</span>
+                    <span></span>
+                </div>
+                <div class="expiry">
+                    <span>Expires</span>
+                    <span>
+                        <span class="expiry-month">00</span>
+                        /
+                        <span class="expiry-year">00</span>
+                    </span>
+                </div>
+                <div class="cvc">
+                    <span>CVC</span>
+                    <span>___</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form id="form" action="{% url 'confirm_booking' %}" method="post">
+        {% csrf_token %}
+        <header>
+            <h2 style="font-family: 'Montserrat', sans-serif;">Payment Information</h2>
+        </header>
+        <fieldset class="card-number">
+            <legend>Card Number</legend>
+            <span>
+                <input id="card-number" maxlength="19" placeholder="1234 5678 9123 4567" required />
+            </span>
+        </fieldset>
+        <fieldset class="card-holder">
+            <legend>Card holder</legend>
+            <input type="text" id="card-holder" maxlength="15" placeholder="John Doe"  required/>
+        </fieldset>
+        <div class="row-container">
+            <fieldset class="expiry-month">
+                <legend>Expiry Month</legend>
+                <select required>
+                    <option selected disabled>MM</option>
+                    <option value="01">01</option>
+                    <option value="02">02</option>
+                    <option value="03">03</option>
+                    <option value="04">04</option>
+                    <option value="05">05</option>
+                    <option value="06">06</option>
+                    <option value="07">07</option>
+                    <option value="08">08</option>
+                    <option value="09">09</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                </select>
+            </fieldset>
+            <fieldset class="expiry-year">
+                <legend>Expiry Year</legend>
+                <select id="card-expiration-year" required>
+                    <option disabled selected>YY</option>
+                    <option value="23">2023</option>
+                    <option value="24">2024</option>
+                    <option value="25">2025</option>
+                    <option value="26">2026</option>
+                    <option value="27">2027</option>
+                    <option value="28">2028</option>
+                    <option value="29">2029</option>
+                    <option value="30">2030</option>
+                </select>
+            </fieldset>
+            <fieldset class="cvc">
+                <legend>CVC</legend>
+                <input type="text" maxlength="3" style="background-color: transparent; border: 1px solid #A9A9A9;"
+                    placeholder="CVC" required/>
+            </fieldset>
+        </div>
+        <div class="payment-details">
+            <div class="subtotal">
+                <span class="category">Sub-Total:</span>
+                <span class="price">₹{{total}}.00/-</span>
+            </div>
+        
+            
+            <input type="hidden" name="event_id" value="{{event.id}}">
+            <input type="hidden" name="nquantity" value="{{nquantity}}">
+            <input type="hidden" name="vquantity" value="{{vquantity}}">
+            
+            
+            
+        </div>
+        <input type="submit" class="button" name="submit"  value="Submit">
+
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", e => {
+        let card_number_input = document.querySelector("form fieldset.card-number input"),
+            card_number_display = document.querySelector("div#card .card-number");
+
+        let card_holder_input = document.querySelector("form fieldset.card-holder input"),
+            card_holder_display = document.querySelector("div#card .card-holder > span:nth-child(2)");
+
+        let expiry_month_select = document.querySelector("form fieldset.expiry-month > select"),
+            expiry_month_display = document.querySelector("div#card .expiry span.expiry-month");
+
+        let expiry_year_select = document.querySelector("form fieldset.expiry-year > select"),
+            expiry_year_display = document.querySelector("div#card .expiry span.expiry-year");
+
+        let cvc_input = document.querySelector("form fieldset.cvc input"),
+            cvc_display = document.querySelector("div#card .cvc > span:nth-child(2)");
+
+        let form = document.querySelector("form");
+
+        card_number_input.onkeydown = e => {
+            let key = e.keyCode || e.charCode;
+
+            let is_digit = (key >= 48 && key <= 57) || (key >= 96 && key <= 105);
+            let is_delete = key == 8 || key == 46;
+
+            if (is_digit || is_delete) {
+                let text = e.target.value;
+                let len = text.length;
+
+                if (is_digit && (len == 4 || len == 9 || len == 14))
+                    card_number_input.value = text + " ";
+            }
+            else return false;
+        }
+
+        card_number_input.onkeyup = e => {
+            let key = e.keyCode || e.charCode;
+
+            let is_digit = (key >= 48 && key <= 57) || (key >= 96 && key <= 105);
+            let is_delete = key == 8 || key == 46;
+
+            if (is_digit || is_delete) {
+                let text = e.target.value;
+                let len = text.length;
+                let digits = "XXXX XXXX XXXX XXXX".split('');
+
+                if (is_digit && (len == 4 || len == 9 || len == 14))
+                    digits[len] = " ";
+
+                for (let i = 0; i < len; i++)
+                    digits[i] = text.charAt(i);
+
+                card_number_display.innerText = digits.join('');
+            }
+            else return false;
+        }
+
+        card_holder_input.onkeyup = e => {
+            card_holder_display.innerText = e.target.value;
+        }
+
+        expiry_month_select.onchange = e => {
+            if (!e.target.value) expiry_month_display.innerText = "00";
+            expiry_month_display.innerText = e.target.value;
+        }
+
+        expiry_year_select.onchange = e => {
+            if (!e.target.value) expiry_year_display.innerText = "00";
+            expiry_year_display.innerText = e.target.value;
+        }
+
+        cvc_input.onkeyup = e => {
+            let text = e.target.value;
+            let digits = ['_', '_', '_'];
+
+            for (let i = 0; i < text.length; i++)
+                digits[i] = text.charAt(i);
+
+            cvc_display.innerText = digits.join('');
+        }
+
+        // form.onsubmit = e => {
+        //     e.preventDefault();
+        // }
+    });
+
+
+</script>

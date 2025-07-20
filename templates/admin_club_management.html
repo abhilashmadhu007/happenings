@@ -1,0 +1,62 @@
+{% extends "adminhome.html" %}
+{% block content %}
+<br><br><br><br><br>
+
+<section id="contact" class="contact section">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Manage Clubs</h2>
+    </div>
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row gy-4">
+            {% for club in clubs %}
+            <div class="col-lg-3 col-md-6">
+                <div class="card club-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ club.name }}</h5>
+                        <p><strong>Email:</strong> {{ club.email }}</p>
+                        <p><strong>Phone:</strong> {{ club.phone }}</p>
+                        <p><strong>Address:</strong> {{ club.address }}</p>
+                        <p><strong>Description:</strong> {{ club.description }}</p>
+                        <div class="card-actions">
+                            {% if club.user and club.user.is_active %}
+                            <!-- If the club user is active, show the Reject button -->
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="club_id" value="{{ club.id }}">
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-danger" 
+                                    name="action" 
+                                    value="reject">
+                                    Reject
+                                </button>
+                            </form>
+                            {% else %}
+                            <!-- If the club user is inactive, show the Approve button -->
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="club_id" value="{{ club.id }}">
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-success" 
+                                    name="action" 
+                                    value="approve">
+                                    Approve
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-lg-12">
+                <p>No clubs found.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
